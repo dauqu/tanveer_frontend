@@ -104,7 +104,7 @@ function Edit_Product() {
                 />
               </div>
 
-              <div className="mt-5">
+              {/* <div className="mt-5">
                 <label className="block text-[16px] font-medium text-[#171B1E]">
                   Select Category
                 </label>
@@ -125,7 +125,7 @@ function Edit_Product() {
                     })
                   }
                 </select>
-              </div>
+              </div> */}
               <div className="mt-5">
                 <label className="block text-[16px] font-medium text-[#171B1E]">
                   Price
