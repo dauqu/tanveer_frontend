@@ -63,9 +63,7 @@ function Signin() {
       <div className="w-[100vw] min-h-[100vh] flex items-center justify-center py-12">
         <div className="w-full max-w-[600px] p-12 border">
           <p className="text-[48px] font-medium text-[#060C43]">Sign In</p>
-          <p className="text-[16px] text-[#626476] mt-1">
-            Amet minim mollit non desert.
-          </p>
+          <p className="text-[16px] text-[#626476] mt-1"></p>
           <form className="w-full" action="">
             <div className="mt-5">
               <label className="text-[12px] font-normal text-[#626476] relative top-[10px] left-[10px] p-2 bg-white">
