@@ -29,15 +29,19 @@ function Add_product() {
   }, []);
 
   // code to post product to database with image upload
+  
+  const [shopId, setShopId] = useState("");
 
   const handleUpload = (e) => {
+    // console.log(shopId);
     e.preventDefault();
     const formData = new FormData();
+    formData.append("image", image);
     formData.append("title", title);
     formData.append("category", category);
     formData.append("price", price);
     formData.append("description", description);
-    formData.append("image", image);
+    formData.append("shopId", shopId);
 
     axios
       .post(`${API}/api/product`, formData)
@@ -48,6 +52,18 @@ function Add_product() {
         console.log(err);
       });
   };
+  const [shops, setShops] = useState([]);
+
+  useEffect(() => {
+    try {
+      axios.get(`${API}/api/shop`).then((res) => {
+        console.log(res.data);
+        setShops([...res.data.shops])
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   return (
     <div>
@@ -107,6 +123,7 @@ function Add_product() {
                 placeholder="Enter Price"
               />
             </div>
+
             <div className="mt-5">
               <label className="block text-[16px] font-normal text-[#232323]">
                 Description
@@ -119,6 +136,28 @@ function Add_product() {
                 rows={2}
                 cols={30}
               ></textarea>
+
+              <div className="mt-5">
+                <label className="block text-[16px] font-medium text-[#171B1E]">
+                  Select Shop
+                </label>
+                <select
+                  id="cars"
+                  onChange={(e) => setShopId(e.target.value)}
+                  className="border w-full h-[45px] outline-none px-3 placeholder:text-[16px] text-[#717579] rounded-md"
+                >
+                  {
+                    // code to map category from database
+                    shops.length > 0 && shops.map((item) => {
+                      return (
+                        <option key={item._id} value={item._id}>
+                          {item.name}
+                        </option>
+                      );
+                    })
+                  }
+                </select>
+              </div>
               <div className="mt-5">
                 <input
                   type="file"
