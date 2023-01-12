@@ -22,8 +22,7 @@ function Signin() {
     e.preventDefault();
     setIsLoading(true);
     axios
-      .post(
-        `${API}/api/login/adminlogin`,
+      .post(`${API}/api/login/adminlogin`,
         {
           email,
           password,
