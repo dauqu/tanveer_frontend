@@ -9,6 +9,26 @@ import { useEffect } from "react";
 import axios from "axios";
 import { API } from "./Constant";
 function Add_category() {
+  const [profiledata, setProfiledata] = useState([]);
+
+  const getuserprofiledata = () => {
+    axios
+      .get(`${API}/api/profile`, {
+        weithCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data.data);
+        setProfiledata(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        window.location.href = "/";
+      });
+  };
+  useEffect(() => {
+    getuserprofiledata();
+  }, []);
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");

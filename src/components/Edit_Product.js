@@ -5,6 +5,26 @@ import { Link, useParams } from "react-router-dom";
 import { API } from "./Constant";
 
 function Edit_Product() {
+  const [profiledata, setProfiledata] = useState([]);
+
+  const getuserprofiledata = () => {
+    axios
+      .get(`${API}/api/profile`, {
+        weithCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data.data);
+        setProfiledata(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        window.location.href = "/";
+      });
+  };
+  useEffect(() => {
+    getuserprofiledata();
+  }, []);
+  
   const [product, setProduct] = useState({
     title: "",
     description: "",

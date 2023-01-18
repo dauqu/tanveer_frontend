@@ -4,7 +4,7 @@ import "./header.css";
 import { AiOutlineMenu } from "react-icons/ai";
 import { AiFillCaretDown } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
-import { BsFillHouseDoorFill } from "react-icons/bs";
+import { BsFillHouseDoorFill, BsPower } from "react-icons/bs";
 import { AiOutlineDown } from "react-icons/ai";
 import { BsFillLightningFill } from "react-icons/bs";
 import { FaUserAlt } from "react-icons/fa";
@@ -16,6 +16,26 @@ import axios from "axios";
 import { API } from "./Constant";
 // code to get all orders from database-------------------
 function Order_detail(props) {
+  // code to get user profile data-------------------
+  const [profiledata, setProfiledata] = useState([]);
+  const getuserprofiledata = () => {
+    axios
+      .get(`${API}/api/profile`, {
+        weithCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data.data);
+        setProfiledata(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        window.location.href = "/";
+      });
+  };
+  useEffect(() => {
+    getuserprofiledata();
+  }, []);
+
   const [status, setStatus] = useState("");
   const [userdata, setUserdata] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -39,12 +59,9 @@ function Order_detail(props) {
   // code to update order status-------------------
   const updateAction = (id) => {
     axios
-      .put(
-        `${API}/api/orders/updatestatus/${id}`,
-        {
-          status: status,
-        }
-      )
+      .put(`${API}/api/orders/updatestatus/${id}`, {
+        status: status,
+      })
       .then((res) => {
         console.log(res);
         setShowModal(false);
@@ -54,25 +71,6 @@ function Order_detail(props) {
         console.log(err);
       });
   };
-
-  // code to get user profile data-------------------
-  const [profiledata, setProfiledata] = useState([]);
-  const getuserprofiledata = () => {
-    axios
-      .get(`${API}/api/profile`, {
-        weithCredentials: true,
-      })
-      .then((res) => {
-        console.log(res.data.data);
-        setProfiledata(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  useEffect(() => {
-    getuserprofiledata();
-  }, []);
 
   // code to display all orders-------------------
   const [order, setOrder] = useState([]);
@@ -101,6 +99,21 @@ function Order_detail(props) {
         console.log(res);
       });
   }, []);
+
+  // code to logout and clear the cookies and redirect to login page
+  const handleLogout = () => {
+    axios
+      .get(`${API}/api/logout`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data);
+        window.location.href = "/";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div>
@@ -263,6 +276,17 @@ function Order_detail(props) {
                         <Link to="/product">Add Product</Link>
                       </li>
                     </ul>
+                  </li>
+                  <li className="hover:text-[#3DA56D]">
+                    <div className="flex items-center hover:bg-[#DCEEE5] hover:text-[#3DA56D] cursor-pointer h-[40px] rounded-full bg-white   px-3">
+                      <BsPower className="text-[20px] hover:text-[#3DA56D] text-[#717579] mr-2 relative top-[-2px]" />
+                      <button
+                        onClick={handleLogout}
+                        className="text-[#717579] hover:text-[#3DA56D] text-[14buttonx] font-semibold"
+                      >
+                        Logout
+                      </button>
+                    </div>
                   </li>
                 </ul>
               </div>

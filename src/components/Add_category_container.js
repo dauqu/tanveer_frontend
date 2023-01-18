@@ -4,7 +4,7 @@ import "./header.css";
 import { AiOutlineMenu } from "react-icons/ai";
 import { AiFillCaretDown } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
-import { BsFillHouseDoorFill } from "react-icons/bs";
+import { BsFillHouseDoorFill, BsPower } from "react-icons/bs";
 import { AiOutlineDown } from "react-icons/ai";
 import { BsFillLightningFill } from "react-icons/bs";
 import { FaUserAlt } from "react-icons/fa";
@@ -15,6 +15,21 @@ import axios from "axios";
 import { API } from "./Constant";
 
 function Add_category_container(props) {
+  // code to check user have token or not if not then redirect to login page
+  const [checktoken, setChecktoken] = useState(false);
+  useEffect(() => {
+    axios
+      .get(`${API}/api/profile/check`, { withCredentials: true })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.status === "success") {
+          setChecktoken(true);
+        } else {
+          window.location.href = "/login";
+        }
+      });
+  }, []);
+
   const [profiledata, setProfiledata] = useState([]);
 
   const getuserprofiledata = () => {
@@ -28,6 +43,7 @@ function Add_category_container(props) {
       })
       .catch((err) => {
         console.log(err);
+        window.location.href = "/";
       });
   };
   useEffect(() => {
@@ -35,14 +51,27 @@ function Add_category_container(props) {
   }, []);
   const [category, setCategory] = useState([]);
   useEffect(() => {
-    fetch(`${API}/api/categories`).then(
-      (response) =>
-        response.json().then((data) => {
-          console.log(data);
-          setCategory(data);
-        })
+    fetch(`${API}/api/categories`).then((response) =>
+      response.json().then((data) => {
+        console.log(data);
+        setCategory(data);
+      })
     );
   }, []);
+  // code to logout and clear the cookies and redirect to login page
+  const handleLogout = () => {
+    axios
+      .get(`${API}/api/logout`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data);
+        window.location.href = "/";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div>
@@ -232,6 +261,17 @@ function Add_category_container(props) {
                       <Link to="/product">Add Product</Link>
                     </li>
                   </ul>
+                </li>
+                <li className="hover:text-[#3DA56D]">
+                  <div className="flex items-center hover:bg-[#DCEEE5] hover:text-[#3DA56D] cursor-pointer h-[40px] rounded-full bg-white   px-3">
+                    <BsPower className="text-[20px] hover:text-[#3DA56D] text-[#717579] mr-2 relative top-[-2px]" />
+                    <button
+                      onClick={handleLogout}
+                      className="text-[#717579] hover:text-[#3DA56D] text-[14buttonx] font-semibold"
+                    >
+                      Logout
+                    </button>
+                  </div>
                 </li>
               </ul>
             </div>

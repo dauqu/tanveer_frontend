@@ -11,7 +11,29 @@ import vegies from "./images/vegies.png";
 import package02 from "./images/package02.png";
 import package03 from "./images/package03.png";
 import polybag from "./images/polybag.png";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { API } from "./Constant";
 function View_order() {
+      // code to get user profile data-------------------
+  const [profiledata, setProfiledata] = useState([]);
+  const getuserprofiledata = () => {
+    axios
+      .get(`${API}/api/profile`, {
+        weithCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data.data);
+        setProfiledata(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        window.location.href = "/";
+      });
+  };
+  useEffect(() => {
+    getuserprofiledata();
+  }, []);
   return (
     <div>
         <div className="w-full min-h-[100vh] flex justify-center items-center p-10">
